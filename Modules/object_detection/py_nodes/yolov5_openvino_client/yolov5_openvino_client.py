@@ -89,12 +89,12 @@ aos_y = math.atan(image_height / 2. / camera_matrix[1][1])
 while not rospy.is_shutdown():
     data = s.recv(44)  # 35
     data = data.decode('utf-8')
-    print(data)
 
 
     if len(data) > 0:
         nums = data.split(',')
         if len(nums) == 8:
+            print(data)
             frame_id = int(nums[0])
             deted = int(nums[1])
             cls = int(nums[2])
@@ -115,9 +115,10 @@ while not rospy.is_shutdown():
                 
                 m_info.detection_infos.append(d_info)
                 m_info.num_objs += 1
+                pub.publish(m_info)
 
             if frame_id != last_fid:
-                pub.publish(m_info)
+                # pub.publish(m_info)
                 m_info = MultiDetectionInfo()
                 m_info.num_objs = 0
 
